@@ -24,34 +24,34 @@ Analysis of November 2019 eCommerce behavior data (of +3.5 million users) to ide
   - Volume: 3.5 million+ users, millions of events (user sessions, views, cart adds, purchases)
 
 Analysis Approach
-1. SQL Analysis (BigQuery)
-Created 4 core analytical queries:<br>
+1. SQL Analysis (BigQuery) to ask 4 core analytical queries:<br>
 
 | Query | Business Question | Key Metrics |
 | ----- | ----------------- | ----------- |
 | Daily & Hourly Performance | How does revenue trend daily, and when do customers engage most? | Revenue, sessions, conversion rate, AOV, Hourly/day-of-week sessions |
-| Overall Funnel | Where do we lose customers? | View → Cart → Purchase rates, drop-offs |
+| Overall Funnel | At which stage do we lose customers? | View → Cart → Purchase rates, drop-offs |
 | Category Funnel | Which categories convert best? | Category-level conversion rates, abandonment |
 | Customer RFM | Who are our valuable customers? | Recency, Frequency, Monetary by customer |
 
-2. Business Intelligence (Looker Studio)
+2. Business Intelligence (Looker Studio)<br>
 Built 2 interactive dashboards:
 
-Dashboard 1 - Performance Overview: Revenue trends, overall funnel, product performance
+Dashboard 1 - Performance Overview: Revenue trends, overall funnel, product performance<br>
 Dashboard 2 - Funnel Optimization: Cart abandonment analysis, hourly patterns, category conversion
 
 3. Python Analysis
 
-K-means clustering: Segmented 441,638 customers into 4 RFM-based groups
+- K-means clustering: Segmented 441,638 customers into 4 RFM-based groups
+  - Standardized features (Recency, Frequency, Monetary, based on SQL extract)
+  - Tested K=2 to K=10 via Elbow Method, selected K=4 as the final segments based on the method
 
-- Standardized features (Recency, Frequency, Monetary, based on SQL extract)
-- Tested K=2 to K=10 via Elbow Method, selected K=4 as the final segments based on the method
-
-
-Scenario modeling: Projected cart recovery revenue across 7 campaign strategies with ROI analysis
+- Demonstrated framework to evaluate ROI of different campaign strategies
+  - Modeled 7 recovery approaches (basic email → multi-channel campaigns)
+  - Calculated potential revenue recovery and ROI by strategy
+  - Note: Campaign cost assumptions require business validation
 
 ## Results
-- [Looker eCommerce Nov 2019 Report Dashboard](https://lookerstudio.google.com/reporting/2c303889-1097-4b2b-9da5-f3be275716d6))
+- [Looker eCommerce Nov 2019 Report Dashboard](https://lookerstudio.google.com/reporting/2c303889-1097-4b2b-9da5-f3be275716d6)
   ### **Customer Segmentation Results (K-Means Clustering)**
 
 | Cluster | Segment Name | Customer Count | % of Total | Avg Recency (days) | Avg Frequency | Avg Monetary | Total Revenue |
@@ -60,4 +60,11 @@ Scenario modeling: Projected cart recovery revenue across 7 campaign strategies 
 | 1 | 💎 **Loyal High-Spenders** | 12,322 | 2.8% | 6.37 | 13.04 | $5,305.94 | $65.4M |
 | 2 | 🐋 **The Whales** | 365 | 0.1% | 3.60 | 61.88 | $34,014.61 | $12.4M |
 | 3 | ⚠️ **At Risk** | 136,679 | 30.9% | 22.43 | 1.44 | $373.19 | $51.0M |
-| | **TOTAL** | **441,638** | **100%** | — | — | — | **$275.2M** |
+
+## Actionable Recommendations
+- Investigate Nov 15-17 Anomaly - Cross-reference with IT logs and payment gateway reports to identify root cause of revenue dip and subsequent spike; implement monitoring to prevent recurrence
+- Validate 'The Whales' Segment - Manual review of 365 customers averaging 62 purchases/month to verify legitimacy (B2B buyers vs data quality issue); if legitimate, create dedicated retention program
+- Conduct user testing to identify friction points for low-converting product categories
+- Launch Cart Recovery Pilot - Deploy basic 3-email sequence to 50% of abandoned carts as A/B test; measure actual recovery rate against industry benchmarks to validate ROI assumptions
+- Optimize Campaign Timing - Schedule marketing campaigns and cart recovery emails during peak engagement hours (6AM-5PM working hours) and highest traffic days (Mondays, weekends)
+- Target At-Risk Segment Win-Back - Launch campaign for 136,679 at-risk customers (22+ days inactive) with time-limited offer
